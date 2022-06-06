@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:09:22 by user42            #+#    #+#             */
-/*   Updated: 2022/05/31 01:34:12 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:07:33 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ public:
 	server *serv;
 
 
-	bool	registr(std::string buffer, server &serv);
+	bool	registr(std::string buffer, server & serv);
 	bool	check_buff();
-	void	finish_registration(server &serv);
+	void	finish_registration(server & serv);
 	void	process(std::string);
 	std::string get_prefix();
 	void	clear_client();

@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:20:14 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 17:17:27 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:07:34 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ std::string client::get_prefix() {
 	return this->nickname + "!" + this->username + "@" + this->server_name;
 }
 
-void    client::finish_registration(server &serv) {
+void    client::finish_registration(server & serv) {
 	std::string toSend;
 	std::string nbr = "0";
 	std::string nul = "";
@@ -74,7 +74,7 @@ void    client::finish_registration(server &serv) {
 	send(this->client_socket, toSend.c_str(), toSend.length(), 0);
 }
 
-bool    client::registr(std::string buffer, server &serv) {
+bool    client::registr(std::string buffer, server & serv) {
 	int index = 0;
 	int tmpdex = 0;
 	std::string tmp = buffer.substr(0, 5);
@@ -104,6 +104,11 @@ bool    client::registr(std::string buffer, server &serv) {
 				return registr(buffer, serv);
 			}
 		}
+		else {
+			printerr(ERR_PASSWDMISMATCH());
+			serv.sendToUser(this->client_socket, ERR_PASSWDMISMATCH());
+			return false;
+		}
 	}
 	if (this->registration_status.compare("PASS") == 0 || this->registration_status.compare("Unregistered") == 0) {
 		if (tmp.compare("NICK ") == 0) {
@@ -115,10 +120,12 @@ bool    client::registr(std::string buffer, server &serv) {
 
 			if (nickname.empty()) {
 				printerr(ERR_NONICKNAMEGIVEN()); // EMPTY NICKNAME
+				serv.sendToUser(this->client_socket, ERR_NONICKNAMEGIVEN());
 				return false;
 			}
 			else if (!isValidNickname(nickname)) {
 				printerr(ERR_ERRONEUSNICKNAME(nickname)); // UNVALID NICKNAME
+				serv.sendToUser(this->client_socket, ERR_ERRONEUSNICKNAME(nickname));
 				return false;
 			}
 			else {

@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:41:46 by user42            #+#    #+#             */
-/*   Updated: 2022/05/30 18:36:39 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:00:53 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ class server
 		std::string    (*f[9])(std::string, server&, client&);
 
 	public:
-		void    init_server(std::string _port, std::string _password);
-		void    process(std::string buffer, client&);
-		void    run_server();
+		void	init_server(std::string _port, std::string _password);
+		void	process(std::string buffer, client&);
+		void	run_server();
+		void	sendToUser(int sd, std::string str);
+
 		config  _config;
 		std::vector<client> clients;
 		channel<client> channels[30];

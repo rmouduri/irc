@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 13:38:26 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 16:43:53 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:15:24 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ public:
     channel() {};
     ~channel() {};
 
-    void add_client(int sock, client &cli) {
+    void add_client(int sock, client & cli) {
         this->clients.insert(std::make_pair(sock, cli));
     }
 
-    void    add_op(int sock, client &cli) {
+    void    add_op(int sock, client & cli) {
         this->ops.insert(std::make_pair(sock, cli));
     }
 

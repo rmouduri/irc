@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 18:55:09 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:18:20 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "server.hpp"
 
- void    server::process(std::string buffer, client &cli) {
+ void    server::process(std::string buffer, client & cli) {
 	size_t index = buffer.find(' ', 0);
 	std::string tmp;
 	if (index == std::numeric_limits<size_t>::max()) {
@@ -121,7 +121,7 @@ void    server::run_server() {
 		for (int i = 0; (unsigned int)i < this->clients.size(); ++i) {
 			sd = this->clients[i].client_socket;
 
-			std::cerr << "sd: " << sd << std::endl;
+			std::cerr << "sd: " << sd << ", size: " << this->clients.size() << std::endl;
 			if (FD_ISSET(sd, &readfds)) {
 				if ((valread = recv(sd, &buffer, 1024, 0)) == 0) {
 					getpeername(sd, (struct sockaddr *)&this->address, (socklen_t *)&addrlen);
@@ -149,6 +149,8 @@ void    server::run_server() {
 					if (this->clients[i].check_buff()) {
 						this->process(this->clients[i].buffer, this->clients[i]);
 						this->clients[i].clear_buff();
+						if (this->clients[i].client_socket == 0)
+							this->clients.erase(this->clients.begin() + i--);
 					}
 				}
 			}
@@ -182,6 +184,10 @@ server::server() {
 	// this->user_cmd[9] = "NAMES";
 	// this->user_cmd[10] = "LIST";
 	// this->user_cmd[11] = "INVITE";
+}
+
+void server::sendToUser(int sd, std::string str) {
+	send(sd, str.c_str(), str.length() * 2, 0);
 }
 
 server::~server() {}

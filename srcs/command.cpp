@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 15:09:54 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 16:45:19 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:15:26 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool isValidNickname(std::string nickname) {
 	return true;
 }
 
-std::string    nick(std::string nickname, server & serv, client & cli) {
+std::string    nick(std::string nickname, server & serv, client &  cli) {
 	std::string toRet = ":" + cli.get_prefix() + " NICK :" + nickname;
 
 	(void)serv;
@@ -43,13 +43,13 @@ std::string    nick(std::string nickname, server & serv, client & cli) {
 	cli.nickname = nickname;
 	return toRet;
 }
-std::string    ping(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    ping(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	return "PONG " + args;
 }
-std::string    pong(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    pong(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	return "PING " + args;
 }
-std::string    join(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    join(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	int index = 0;
 	std::string toRet;
 	std::cout << toRet[0] << std::endl;
@@ -81,16 +81,16 @@ std::string    join(std::string args, __attribute__((unused)) server &serv, __at
 	}
 	return toRet;
 }
-std::string    part(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    part(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	std::string toRet = ":" + cli.get_prefix() + " PART " + args;
 	return toRet;
 }
-std::string    quit(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    quit(std::string args, __attribute__((unused)) server & serv, client & cli) {
 	close(cli.client_socket);
 	cli.clear_client();
 	return args;
 }
-std::string    privmsg(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    privmsg(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	std::string toRet = ":" + cli.get_prefix() + " PRIVMSG " + args + "\r\n";
 	std::string target;
 	int index = 0;
@@ -126,7 +126,7 @@ std::string    privmsg(std::string args, __attribute__((unused)) server &serv, _
 	return "";
 }
 
-std::string    mode(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    mode(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	int index = 0;
 
 	while (index < 30) {
@@ -142,7 +142,7 @@ std::string    mode(std::string args, __attribute__((unused)) server &serv, __at
 	return toRet;
 }
 
-std::string    who(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
+std::string    who(std::string args, __attribute__((unused)) server & serv, __attribute__((unused)) client & cli) {
 	int index = 0;
 
 	while (index < 30) {
