@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 15:09:54 by user42            #+#    #+#             */
-/*   Updated: 2022/05/31 21:29:06 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 16:45:19 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool isValidNickname(std::string nickname) {
 	return true;
 }
 
-std::string    nick(std::string nickname, server & serv, client & cli){
+std::string    nick(std::string nickname, server & serv, client & cli) {
 	std::string toRet = ":" + cli.get_prefix() + " NICK :" + nickname;
 
 	(void)serv;
@@ -43,20 +43,20 @@ std::string    nick(std::string nickname, server & serv, client & cli){
 	cli.nickname = nickname;
 	return toRet;
 }
-std::string    ping(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    ping(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	return "PONG " + args;
 }
-std::string    pong(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    pong(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	return "PING " + args;
 }
-std::string    join(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    join(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	int index = 0;
 	std::string toRet;
 	std::cout << toRet[0] << std::endl;
-	while (index < 30 && serv.channels[index].name != ""){
-		if (serv.channels[index].name.compare(args) == 0){
+	while (index < 30 && serv.channels[index].name != "") {
+		if (serv.channels[index].name.compare(args) == 0) {
 			serv.channels[index].add_client(cli.client_socket, cli);
-			if (serv.channels[index].topic != ""){
+			if (serv.channels[index].topic != "") {
 				toRet += ":" + cli.get_prefix() + " 332 " + cli.nickname + " " + get_replies(332, serv.channels[index].name, serv.channels[index].topic, "", "", "","","") + LINEEND;
 			}
 			toRet += ":" + cli.get_prefix() + " 353 " + cli.nickname + " " + get_replies(353, serv.channels[index].mods, serv.channels[index].name, serv.channels[index].get_nicks("@"), "", "", "", "") + LINEEND;
@@ -66,13 +66,13 @@ std::string    join(std::string args, __attribute__((unused)) server &serv, __at
 		}
 		index++;
 	}
-	if (index >= 30){
+	if (index >= 30) {
 		std::cout << "all chann full" << std::endl;
 	}
-	else{
+	else {
 		serv.channels[index].add_op(cli.client_socket, cli);
 		serv.channels[index].name = args;
-		if (serv.channels[index].topic != ""){
+		if (serv.channels[index].topic != "") {
 			toRet += ":" + cli.get_prefix() + " 332 " + cli.nickname + " " + get_replies(332, serv.channels[index].name, serv.channels[index].topic, "", "", "","","") + LINEEND;
 		}
 		toRet += ":" + cli.get_prefix() + " 353 " + cli.nickname + " " + get_replies(353, serv.channels[index].mods, serv.channels[index].name, serv.channels[index].get_nicks("@"), "", "", "", "") + LINEEND;
@@ -81,30 +81,30 @@ std::string    join(std::string args, __attribute__((unused)) server &serv, __at
 	}
 	return toRet;
 }
-std::string    part(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    part(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	std::string toRet = ":" + cli.get_prefix() + " PART " + args;
 	return toRet;
 }
-std::string    quit(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    quit(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	close(cli.client_socket);
 	cli.clear_client();
 	return args;
 }
-std::string    privmsg(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    privmsg(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	std::string toRet = ":" + cli.get_prefix() + " PRIVMSG " + args + "\r\n";
 	std::string target;
 	int index = 0;
 
-	while (args[index] && args[index] != ' '){
+	while (args[index] && args[index] != ' ') {
 		index++;
 	}
 	target = args.substr(0, index);
 	
 	index = 0;
 
-	if (target[0] == '#'){
-		while (index < 30){
-			if (serv.channels[index].name.compare(target) == 0){
+	if (target[0] == '#') {
+		while (index < 30) {
+			if (serv.channels[index].name.compare(target) == 0) {
 				serv.channels[index].send_to_clients(toRet, cli.client_socket);
 			}
 			index++;
@@ -112,8 +112,8 @@ std::string    privmsg(std::string args, __attribute__((unused)) server &serv, _
 	}
 	else
 	{
-		while (index < 30){
-			if (serv.clients[index].nickname.compare(target) == 0){
+		while (index < 30) {
+			if (serv.clients[index].nickname.compare(target) == 0) {
 				send(serv.clients[index].client_socket, toRet.c_str(), toRet.length(), 0);
 				send(serv.clients[index].client_socket, "SALUT SA VA\r\n", 13, 0);
 				break;
@@ -126,32 +126,32 @@ std::string    privmsg(std::string args, __attribute__((unused)) server &serv, _
 	return "";
 }
 
-std::string    mode(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    mode(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	int index = 0;
 
-	while (index < 30){
-		if (serv.channels[index].name.compare(args) == 0){
+	while (index < 30) {
+		if (serv.channels[index].name.compare(args) == 0) {
 			break;
 		}
 		index++;
 	}
-	if (index >= 30){
+	if (index >= 30) {
 		return "";
 	}
 	std::string toRet = ":" + cli.get_prefix() + " 324 " + cli.nickname + " " + get_replies(324, serv.channels[index].name, serv.channels[index].mods, "", "", "","","");
 	return toRet;
 }
 
-std::string    who(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli){
+std::string    who(std::string args, __attribute__((unused)) server &serv, __attribute__((unused)) client& cli) {
 	int index = 0;
 
-	while (index < 30){
-		if (serv.channels[index].name.compare(args) == 0){
+	while (index < 30) {
+		if (serv.channels[index].name.compare(args) == 0) {
 			break;
 		}
 		index++;
 	}
-	if (index >= 30){
+	if (index >= 30) {
 		return "";
 	}
 	std::string toRet = ":" + cli.get_prefix() + " 315 " + cli.nickname + " " + get_replies(315, serv.channels[index].get_users(), "", "", "", "", "", "");
