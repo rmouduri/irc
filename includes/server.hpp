@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:41:46 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:00:53 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:21:52 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ class server
 		void	process(std::string buffer, client&);
 		void	run_server();
 		void	sendToUser(int sd, std::string str);
+		const std::string	getPassword(void) const;
 
 		config  _config;
 		std::vector<client> clients;

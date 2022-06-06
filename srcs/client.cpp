@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:20:14 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:07:34 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:23:55 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,11 @@ bool    client::registr(std::string buffer, server & serv) {
 			}
 			this->pass = buffer.substr(5, index - 4);
 			clean_string(this->pass);
+			if (this->pass != serv.getPassword()) {
+				printerr(ERR_PASSWDMISMATCH());
+				serv.sendToUser(this->client_socket, ERR_PASSWDMISMATCH());
+				return false;
+			}
 			this->registration_status = "PASS";
 			if (buffer[index + 1]) {
 				index++;

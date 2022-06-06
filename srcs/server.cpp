@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:18:20 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:24:26 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,12 @@ server::server() {
 	// this->user_cmd[11] = "INVITE";
 }
 
+const std::string server::getPassword(void) const {
+	return this->password;
+}
+
 void server::sendToUser(int sd, std::string str) {
+	std::cerr << "String to send: " << str << ", size: " << str.length() << std::endl;
 	send(sd, str.c_str(), str.length() * 2, 0);
 }
 
