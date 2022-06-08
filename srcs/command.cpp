@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 15:09:54 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:15:26 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:59:15 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ bool isValidNickname(std::string nickname) {
 std::string    nick(std::string nickname, server & serv, client &  cli) {
 	std::string toRet = ":" + cli.get_prefix() + " NICK :" + nickname;
 
-	(void)serv;
 	clean_string(nickname);
 
 	if (nickname.empty())

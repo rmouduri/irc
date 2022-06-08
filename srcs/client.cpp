@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:20:14 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:23:55 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:45:31 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,15 @@ std::string client::get_prefix() {
 
 void    client::finish_registration(server & serv) {
 	std::string toSend;
-	std::string nbr = "0";
 	std::string nul = "";
-	std::string date = "Today";
-	std::string umod = "aiwro";
-	std::string cmod = "Oovimnptkl";
+	std::string nbr = static_cast<std::ostringstream *>( &(std::ostringstream() << serv.connectedUsers) )->str();
 	this->serv = &serv;
+
 	toSend = ": NICK :" + this->nickname + LINEEND;
 	toSend += ":" + get_prefix() + " 001 " + this->nickname + " " + get_replies(1, get_prefix(), nul, nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 002 " + this->nickname + " " + get_replies(2, serv._config.version, nul, nul, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 003 " + this->nickname + " " + get_replies(3, date, nul, nul, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 004 " + this->nickname + " " + get_replies(4, serv._config.server_name, serv._config.version, umod, cmod, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 003 " + this->nickname + " " + get_replies(3, serv.date, nul, nul, nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 004 " + this->nickname + " " + get_replies(4, serv._config.server_name, serv._config.version, serv._config.umod, serv._config.cmod, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 251 " + this->nickname + " " + get_replies(251, nbr, nbr, nbr, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 252 " + this->nickname + " " + get_replies(252, nbr, nul, nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 253 " + this->nickname + " " + get_replies(253, nbr, nul, nul, nul, nul, nul, nul) + LINEEND;

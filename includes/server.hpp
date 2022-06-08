@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:41:46 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:21:52 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:42:16 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,26 @@ class server
 		int port;
 		int addrlen;
 		int master_socket;
-		std::string password;
 		struct sockaddr_in address;
-		std::string     user_cmd[9];
-		std::string    (*f[9])(std::string, server&, client&);
+		std::string		user_cmd[9];
+		std::string		(*f[9])(std::string, server&, client&);
+
+		std::string		password;
+		std::string getCurrentDate();
 
 	public:
 		void	init_server(std::string _port, std::string _password);
 		void	process(std::string buffer, client&);
 		void	run_server();
 		void	sendToUser(int sd, std::string str);
+
 		const std::string	getPassword(void) const;
 
-		config  _config;
+		config	_config;
 		std::vector<client> clients;
 		channel<client> channels[30];
+		std::string		date;
+		int				connectedUsers;
 		server();
 		~server();
 };

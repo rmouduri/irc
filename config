@@ -1,3 +1,5 @@
 name=IRC server
 version=1.0
 motd=Bienvenue sur l'IRC server
+umod=aiwro
+cmod=Oovimnptkl

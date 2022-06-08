@@ -6,13 +6,14 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/06 19:24:26 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:50:54 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits>
 #include <errno.h>
 #include <stdlib.h>
+#include <ctime>
 #include "server.hpp"
 
  void    server::process(std::string buffer, client & cli) {
@@ -115,6 +116,7 @@ void    server::run_server() {
 			newClient.client_socket = new_socket;
 
 			this->clients.push_back(newClient);
+			++this->connectedUsers;
 			std::cout << "Adding to list of sockets as " << this->clients.size() - 1 << std::endl;
 		}
 		
@@ -128,6 +130,7 @@ void    server::run_server() {
 					std::cout << "Client Disconnected, ip: " << inet_ntoa(this->address.sin_addr) << " port: " << ntohs(this->address.sin_port) << std::endl;
 					close(sd);
 					this->clients.erase(this->clients.begin() + i--);
+					--this->connectedUsers;
 				}
 				else if (this->clients[i].is_registered == false) {
 					buffer[valread] = '\0';
@@ -137,6 +140,7 @@ void    server::run_server() {
 						if (this->clients[i].registr(this->clients[i].buffer, *this) == false) {
 							close(sd);
 							this->clients.erase(this->clients.begin() + i--);
+							--this->connectedUsers;
 							std::cout << "Client Registration Failed" << std::endl;
 						}
 						else this->clients[i].clear_buff();
@@ -149,8 +153,10 @@ void    server::run_server() {
 					if (this->clients[i].check_buff()) {
 						this->process(this->clients[i].buffer, this->clients[i]);
 						this->clients[i].clear_buff();
-						if (this->clients[i].client_socket == 0)
+						if (this->clients[i].client_socket == 0) {
 							this->clients.erase(this->clients.begin() + i--);
+							close(sd);
+						}
 					}
 				}
 			}
@@ -158,8 +164,15 @@ void    server::run_server() {
 	}
 }
 
+std::string server::getCurrentDate() {
+	std::time_t t = std::time(0);
+	std::tm * now = std::localtime(&t);
+	std::string ret;
+	ret = (now->tm_year + 1900) + '-' + (now->tm_mon + 1) + '-'+  now->tm_mday;
+	return ret;
+}
 
-server::server() {
+server::server(): connectedUsers(0) {
 	this->user_cmd[0] = "NICK";
 	this->user_cmd[1] = "PING";
 	this->user_cmd[2] = "PONG";
@@ -184,6 +197,8 @@ server::server() {
 	// this->user_cmd[9] = "NAMES";
 	// this->user_cmd[10] = "LIST";
 	// this->user_cmd[11] = "INVITE";
+
+	this->date = getCurrentDate();
 }
 
 const std::string server::getPassword(void) const {
