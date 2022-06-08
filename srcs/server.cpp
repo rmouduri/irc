@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/08 17:50:54 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:58:42 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void    server::run_server() {
 						this->clients[i].clear_buff();
 						if (this->clients[i].client_socket == 0) {
 							this->clients.erase(this->clients.begin() + i--);
+							--this->connectedUsers;
 							close(sd);
 						}
 					}
