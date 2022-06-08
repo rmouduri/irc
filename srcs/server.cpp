@@ -6,12 +6,13 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/08 17:58:42 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/08 18:43:33 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits>
 #include <errno.h>
+#include <sstream>
 #include <stdlib.h>
 #include <ctime>
 #include "server.hpp"
@@ -106,7 +107,7 @@ void    server::run_server() {
 		}
 
 		if (FD_ISSET(master_socket, &readfds)) {
-			if ((new_socket = accept(master_socket, (struct sockaddr *)&this->address, (socklen_t*)&addrlen)) < 0) {
+			if ((new_socket = accept(master_socket, (struct sockaddr *)&this->address, (socklen_t *)&addrlen)) < 0) {
 				std::cout << "Failed to accept. errno: " << errno << std::endl;
 				exit(EXIT_FAILURE);
 			}
@@ -169,7 +170,12 @@ std::string server::getCurrentDate() {
 	std::time_t t = std::time(0);
 	std::tm * now = std::localtime(&t);
 	std::string ret;
-	ret = (now->tm_year + 1900) + '-' + (now->tm_mon + 1) + '-'+  now->tm_mday;
+	ret += static_cast<std::ostringstream *>( &(std::ostringstream() << (now->tm_year + 1900)) )->str();
+	ret += '-';
+	ret += static_cast<std::ostringstream *>( &(std::ostringstream() << (now->tm_mon + 1) ))->str();
+	ret += '-';
+	ret += static_cast<std::ostringstream *>( &(std::ostringstream() << now->tm_mday ))->str();
+
 	return ret;
 }
 
