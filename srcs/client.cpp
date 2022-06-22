@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:20:14 by user42            #+#    #+#             */
-/*   Updated: 2022/06/08 18:43:45 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/22 12:12:32 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void    client::finish_registration(server & serv) {
 	std::string toSend;
 	std::string nul = "";
 	std::string nbr = static_cast<std::ostringstream *>( &(std::ostringstream() << serv.connectedUsers) )->str();
+	std::string nbChannels = static_cast<std::ostringstream *>( &(std::ostringstream() << serv.nbChannels) )->str();
 	this->serv = &serv;
 
 	toSend = ": NICK :" + this->nickname + LINEEND;
@@ -61,11 +62,11 @@ void    client::finish_registration(server & serv) {
 	toSend += ":" + get_prefix() + " 002 " + this->nickname + " " + get_replies(2, serv._config.version, nul, nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 003 " + this->nickname + " " + get_replies(3, serv.date, nul, nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 004 " + this->nickname + " " + get_replies(4, serv._config.server_name, serv._config.version, serv._config.umod, serv._config.cmod, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 251 " + this->nickname + " " + get_replies(251, nbr, nbr, nbr, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 252 " + this->nickname + " " + get_replies(252, nbr, nul, nul, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 253 " + this->nickname + " " + get_replies(253, nbr, nul, nul, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 254 " + this->nickname + " " + get_replies(254, nbr, nul, nul, nul, nul, nul, nul) + LINEEND;
-	toSend += ":" + get_prefix() + " 255 " + this->nickname + " " + get_replies(255, nbr, nbr, nul, nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 251 " + this->nickname + " " + get_replies(251, nbr, "0", "1", nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 252 " + this->nickname + " " + get_replies(252, "0", nul, nul, nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 253 " + this->nickname + " " + get_replies(253, "0", nul, nul, nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 254 " + this->nickname + " " + get_replies(254, nbChannels, nul, nul, nul, nul, nul, nul) + LINEEND;
+	toSend += ":" + get_prefix() + " 255 " + this->nickname + " " + get_replies(255, nbr, "1", nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 375 " + this->nickname + " " + get_replies(375, serv._config.server_name, nul, nul, nul, nul, nul, nul) + LINEEND;
 	toSend += ":" + get_prefix() + " 372 " + this->nickname + " " + get_replies(372, serv._config.motd, nul, nul, nul, nul, nul, nul) + LINEEND;
 	std::cout << toSend << std::endl;

@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:41:46 by user42            #+#    #+#             */
-/*   Updated: 2022/06/08 17:42:16 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/22 12:07:15 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class server
 		config	_config;
 		std::vector<client> clients;
 		channel<client> channels[30];
+		int nbChannels;
 		std::string		date;
 		int				connectedUsers;
 		server();

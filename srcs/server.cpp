@@ -6,7 +6,7 @@
 /*   By: rmouduri <rmouduri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:42:17 by user42            #+#    #+#             */
-/*   Updated: 2022/06/08 18:43:33 by rmouduri         ###   ########.fr       */
+/*   Updated: 2022/06/22 12:11:28 by rmouduri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ std::string server::getCurrentDate() {
 	return ret;
 }
 
-server::server(): connectedUsers(0) {
+server::server(): nbChannels(0), connectedUsers(0) {
 	this->user_cmd[0] = "NICK";
 	this->user_cmd[1] = "PING";
 	this->user_cmd[2] = "PONG";
